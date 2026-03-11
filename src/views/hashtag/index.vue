@@ -9,34 +9,31 @@
           </div>
           
           <el-form :model="hashtagForm" label-position="top">
-            <el-form-item label="Name Group *" class="premium-form-item">
-              <el-input 
+            <AppFormItem label="Name Group *">
+              <AppInput 
                 v-model="hashtagForm.name" 
                 placeholder="Enter hashtag name" 
-                class="premium-input"
               />
-            </el-form-item>
+            </AppFormItem>
 
-            <el-form-item label="Content *" class="premium-form-item">
-              <el-input
+            <AppFormItem label="Content *">
+              <AppInput
                 v-model="hashtagForm.content"
                 type="textarea"
                 :rows="4"
                 placeholder="Enter content here"
-                class="premium-input"
                 maxlength="5000"
                 show-word-limit
               />
-            </el-form-item>
+            </AppFormItem>
 
             <div class="client-section">
               <h4>Select Client</h4>
               <div class="search-client">
-                <el-input
+                <AppInput
                   v-model="clientSearch"
                   placeholder="Search client: name #whmcsid +phone (e.g. test #123 +456)"
                   prefix-icon="Search"
-                  class="premium-input"
                 />
               </div>
               <div class="client-select-box">
@@ -122,6 +119,8 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { Search, ArrowDown, Edit, Delete } from '@element-plus/icons-vue'
+import AppInput from '@/components/Form/AppInput.vue'
+import AppFormItem from '@/components/Form/AppFormItem.vue'
 
 const hashtagForm = reactive({
   name: '',
@@ -161,7 +160,6 @@ const hashtags = ref([
 ])
 
 const handleAdd = () => {
-  // Logic to add hashtag
 }
 </script>
 
@@ -180,19 +178,6 @@ const handleAdd = () => {
   font-weight: 700;
   color: #1e3a63;
   margin: 0 0 20px 0;
-}
-
-/* Form Styles */
-.premium-form-item :deep(.el-form-item__label) {
-  font-weight: 600;
-  color: #555;
-  padding-bottom: 4px;
-}
-
-.premium-input :deep(.el-input__wrapper),
-.premium-input :deep(.el-textarea__inner) {
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px #dcdfe6 inset;
 }
 
 .client-section h4 {

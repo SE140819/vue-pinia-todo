@@ -30,26 +30,22 @@
             <p>Login to access your account</p>
           </div>
 
-          <el-form :model="loginForm" class="custom-form">
-            <div class="input-group">
-              <label>Email</label>
-              <el-input 
+          <el-form :model="loginForm">
+            <AppFormItem label="Email">
+              <AppInput 
                 v-model="loginForm.email" 
                 placeholder="Enter email" 
-                class="premium-input"
               />
-            </div>
+            </AppFormItem>
 
-            <div class="input-group">
-              <label>Password</label>
-              <el-input 
+            <AppFormItem label="Password">
+              <AppInput 
                 v-model="loginForm.password" 
                 type="password" 
                 placeholder="Enter your password" 
                 show-password
-                class="premium-input"
               />
-            </div>
+            </AppFormItem>
 
             <div class="form-actions">
               <el-checkbox v-model="rememberMe">Remember me</el-checkbox>
@@ -90,6 +86,8 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import { ElMessage } from 'element-plus'
+import AppInput from '@/components/Form/AppInput.vue'
+import AppFormItem from '@/components/Form/AppFormItem.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -108,7 +106,6 @@ const handleLogin = async () => {
   }
 
   loading.value = true
-  // We use our refactored store (which uses authApi)
   const success = authStore.login(loginForm.email, loginForm.password)
   
   setTimeout(() => {
@@ -124,6 +121,7 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
+/* Page Layout styles remain same - specific to this view */
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -141,14 +139,13 @@ const handleLogin = async () => {
   margin: 20px;
 }
 
-/* Illustration Section */
 .illustration-section {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  display: none; /* Hidden on mobile */
+  display: none;
 }
 
 @media (min-width: 1024px) {
@@ -185,7 +182,6 @@ const handleLogin = async () => {
   z-index: -1;
 }
 
-/* Form Section */
 .form-section {
   flex: 1;
   display: flex;
@@ -241,35 +237,6 @@ const handleLogin = async () => {
   color: #888;
   margin-bottom: 32px;
   font-size: 14px;
-}
-
-/* Custom Form Styles */
-.input-group {
-  margin-bottom: 24px;
-  position: relative;
-}
-
-.input-group label {
-  position: absolute;
-  top: -10px;
-  left: 12px;
-  background: #fff;
-  padding: 0 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-  z-index: 2;
-}
-
-:deep(.premium-input .el-input__wrapper) {
-  height: 48px;
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px #dcdfe6 inset;
-  transition: all 0.3s;
-}
-
-:deep(.premium-input .el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #2d5a9e inset !important;
 }
 
 .form-actions {
