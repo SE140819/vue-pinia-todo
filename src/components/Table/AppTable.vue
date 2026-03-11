@@ -39,7 +39,8 @@
     <!-- Built-in Pagination -->
     <div v-if="total > 0" class="app-pagination">
       <el-pagination
-        v-model:current-page="currentPage"
+        :current-page="currentPage"
+        @update:current-page="$emit('update:currentPage', $event)"
         :page-size="pageSize"
         :total="total"
         layout="prev, pager, next, jumper"
