@@ -3,14 +3,16 @@ import Login from "@/views/login/index.vue"
 import Dashboard from "@/views/dashboard/index.vue"
 import { authApi } from "@/api/auth"
 import AppMainLayout from "@/layouts/AppMainLayout.vue"
+import Hashtag from "@/views/hashtag/index.vue"
 
 const routes = [
-    { path: "/login", component: Login },
+    { path: "/login", component: Login, name: "Login" },
     { 
       path: "/", 
       component: AppMainLayout,
       children: [
-        { path: "", component: Dashboard }
+        { path: "", component: Dashboard, name: "Dashboard" },
+        { path: "hashtag", component: Hashtag, name: "Hashtag" }
       ],
       meta: { requiresAuth: true } 
     }
