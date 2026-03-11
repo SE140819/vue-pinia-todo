@@ -33,10 +33,12 @@
         <!-- Custom slot for User Name -->
         <template #username="{ row }">
           <div class="user-cell">
-            <el-avatar :size="32" class="user-avatar">{{ row.username.substring(0,2).toUpperCase() }}</el-avatar>
+            <el-avatar :size="32" class="user-avatar">
+              {{ row.username?.substring(0, 2).toUpperCase() || '??' }}
+            </el-avatar>
             <div class="user-info">
-              <span class="username">{{ row.username }}</span>
-              <span class="role">{{ row.role }} • {{ row.subRole }}</span>
+              <span class="username">{{ row.username || 'Unknown' }}</span>
+              <span class="role">{{ row.role || 'N/A' }} • {{ row.subRole || 'N/A' }}</span>
             </div>
           </div>
         </template>
@@ -44,10 +46,10 @@
         <!-- Custom slot for Social Accounts -->
         <template #socials="{ row }">
           <div class="social-stack">
-            <div v-for="(social, index) in row.socials.slice(0, 3)" :key="index" class="social-icon">
+            <div v-for="(social, index) in (row.socials || []).slice(0, 3)" :key="index" class="social-icon">
               <el-avatar :size="24" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
             </div>
-            <span v-if="row.socials.length > 3" class="more-socials">+ {{ row.socials.length - 3 }}</span>
+            <span v-if="(row.socials || []).length > 3" class="more-socials">+ {{ row.socials.length - 3 }}</span>
           </div>
         </template>
 
