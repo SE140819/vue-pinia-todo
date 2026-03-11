@@ -1,0 +1,27 @@
+// Main styles and resets
+@use "variables" as vars;
+
+body {
+  margin: 0;
+  font-family: vars.$font-family-base;
+  background-color: vars.$bg-color;
+  color: vars.$text-color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: vars.$font-family-heading;
+  font-weight: 700;
+  color: vars.$secondary-color;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s;
+}
+
+* {
+  box-sizing: border-box;
+}

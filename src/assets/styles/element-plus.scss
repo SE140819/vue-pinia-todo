@@ -1,0 +1,18 @@
+// Element Plus Overrides
+@use "variables" as vars;
+
+:deep(.el-input__wrapper) {
+  border-radius: vars.$radius-base !important;
+  box-shadow: 0 0 0 1px #dcdfe6 inset !important;
+  transition: all 0.3s;
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  box-shadow: 0 0 0 1px vars.$primary-color inset !important;
+}
+
+:deep(.el-button--primary) {
+  background-color: vars.$primary-color;
+  border-color: vars.$primary-color;
+  font-family: vars.$font-family-base;
+}

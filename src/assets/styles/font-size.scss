@@ -1,0 +1,17 @@
+// Font sizes
+$fs-xs: 10px;
+$fs-sm: 12px;
+$fs-base: 14px;
+$fs-md: 16px;
+$fs-lg: 18px;
+$fs-xl: 24px;
+$fs-2xl: 28px;
+$fs-3xl: 32px;
+
+.text-xs { font-size: $fs-xs; }
+.text-sm { font-size: $fs-sm; }
+.text-base { font-size: $fs-base; }
+.text-md { font-size: $fs-md; }
+.text-lg { font-size: $fs-lg; }
+.text-xl { font-size: $fs-xl; }
+.text-2xl { font-size: $fs-2xl; }
