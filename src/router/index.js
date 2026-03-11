@@ -1,11 +1,19 @@
 import { createRouter, createWebHistory } from "vue-router"
-
 import Login from "@/views/login/index.vue"
 import Dashboard from "@/views/dashboard/index.vue"
+import { authApi } from "@/api/auth"
+import AppMainLayout from "@/layouts/AppMainLayout.vue"
 
 const routes = [
     { path: "/login", component: Login },
-    { path: "/", component: Dashboard, meta: { requiresAuth: true } }
+    { 
+      path: "/", 
+      component: AppMainLayout,
+      children: [
+        { path: "", component: Dashboard }
+      ],
+      meta: { requiresAuth: true } 
+    }
 ]
 
 const router = createRouter({
@@ -14,15 +22,13 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-
-    const token = localStorage.getItem("token")
+    const token = authApi.getToken()
 
     if (to.meta.requiresAuth && !token) {
         next("/login")
     } else {
         next()
     }
-
 })
 
 export default router
