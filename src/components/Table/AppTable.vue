@@ -40,12 +40,11 @@
     <div v-if="total > 0" class="app-pagination">
       <el-pagination
         :current-page="currentPage"
-        @update:current-page="$emit('update:currentPage', $event)"
         :page-size="pageSize"
         :total="total"
         layout="prev, pager, next, jumper"
         background
-        @update:current-page="$emit('page-change', $event)"
+        @update:current-page="val => { $emit('update:currentPage', val); $emit('page-change', val); }"
       />
     </div>
   </div>
