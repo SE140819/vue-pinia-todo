@@ -1,7 +1,8 @@
-import axios from 'axios'
+import axios, { type InternalAxiosRequestConfig, type AxiosResponse } from 'axios'
+import { CONSTANTS } from '@/constants'
 
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: (import.meta.env.VITE_API_URL as string) || '/api',
   headers: {
     'Content-Type': 'application/json'
   }
@@ -9,31 +10,33 @@ const axiosClient = axios.create({
 
 // Request interceptor
 axiosClient.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token')
-    if (token) {
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem(CONSTANTS.STORAGE_KEYS.TOKEN)
+    if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`
     }
     return config
   },
-  (error) => {
+  (error: any) => {
     return Promise.reject(error)
   }
 )
 
 // Response interceptor
 axiosClient.interceptors.response.use(
-  (response) => {
+  (response: AxiosResponse) => {
     return response.data
   },
-  (error) => {
+  (error: any) => {
     if (error.response && error.response.status === 401) {
       // Handle logout or refresh token
-      localStorage.removeItem('token')
+      localStorage.removeItem(CONSTANTS.STORAGE_KEYS.TOKEN)
       window.location.href = '/login'
     }
     return Promise.reject(error)
   }
 )
 
+
 export default axiosClient
+

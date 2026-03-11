@@ -1,8 +1,13 @@
 import { defineStore } from "pinia"
 import { todoApi } from "@/api/todo"
+import type { Todo } from "@/types"
+
+interface TodoState {
+  todos: Todo[]
+}
 
 export const useTodoStore = defineStore("todo", {
-  state: () => ({
+  state: (): TodoState => ({
     todos: []
   }),
 
@@ -13,17 +18,17 @@ export const useTodoStore = defineStore("todo", {
   },
 
   actions: {
-    loadTodos() {
+    loadTodos(): void {
       this.todos = todoApi.getTodos()
     },
 
-    async addTodo(text) {
+    async addTodo(text: string): Promise<void> {
       const newTodo = await todoApi.createTodo(text)
       this.todos.push(newTodo)
       todoApi.saveTodos(this.todos)
     },
 
-    toggleTodo(id) {
+    toggleTodo(id: number): void {
       const todo = this.todos.find(t => t.id === id)
       if (todo) {
         todo.done = !todo.done

@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router"
 import Login from "@/views/login/index.vue"
 import Dashboard from "@/views/dashboard/index.vue"
 import { authApi } from "@/api/auth"
@@ -6,7 +6,7 @@ import AppMainLayout from "@/layouts/AppMainLayout.vue"
 import Hashtag from "@/views/hashtag/index.vue"
 import UserManage from "@/views/user-manage/index.vue"
 
-const routes = [
+const routes: RouteRecordRaw[] = [
     { path: "/login", component: Login, name: "Login" },
     { 
       path: "/", 
@@ -24,6 +24,7 @@ const router = createRouter({
     history: createWebHistory(),
     routes
 })
+
 
 router.beforeEach((to, from, next) => {
     const token = authApi.getToken()

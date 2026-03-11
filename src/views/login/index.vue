@@ -81,7 +81,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
@@ -99,26 +99,34 @@ const loginForm = reactive({
   password: ''
 })
 
-const handleLogin = async () => {
+async function handleLogin() {
   if (!loginForm.email || !loginForm.password) {
     ElMessage.warning('Vui lòng nhập đầy đủ thông tin')
     return
   }
 
   loading.value = true
-  const success = authStore.login(loginForm.email, loginForm.password)
-  
-  setTimeout(() => {
-    loading.value = false
+  try {
+    const success = authStore.login(loginForm.email, loginForm.password)
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800))
+    
     if (success) {
       ElMessage.success('Đăng nhập thành công')
       router.push('/')
     } else {
       ElMessage.error('Sai tài khoản hoặc mật khẩu')
     }
-  }, 800)
+  } catch (error) {
+    console.error(error)
+    ElMessage.error('Đã xảy ra lỗi khi đăng nhập')
+  } finally {
+    loading.value = false
+  }
 }
 </script>
+
 
 <style scoped>
 /* Page Layout styles remain same - specific to this view */

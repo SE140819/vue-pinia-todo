@@ -1,7 +1,11 @@
 <template>
   <div class="app-table-container">
+    <div v-if="loading" class="table-loading-state">
+      <AppTableSkeleton :rows="5" />
+    </div>
+
     <el-table
-      v-loading="loading"
+      v-else
       :data="data"
       v-bind="$attrs"
       class="app-table"
@@ -44,44 +48,54 @@
         :total="total"
         layout="prev, pager, next, jumper"
         background
-        @update:current-page="val => { $emit('update:currentPage', val); $emit('page-change', val); }"
+        @update:current-page="handlePageChange"
       />
+
     </div>
   </div>
 </template>
 
-<script setup>
-import { computed } from 'vue'
+<script setup lang="ts">
+import AppTableSkeleton from '@/components/Skeleton/AppTableSkeleton.vue'
 
-const props = defineProps({
-  data: {
-    type: Array,
-    default: () => []
-  },
-  columns: {
-    type: Array,
-    default: () => []
-  },
-  loading: {
-    type: Boolean,
-    default: false
-  },
-  total: {
-    type: Number,
-    default: 0
-  },
-  currentPage: {
-    type: Number,
-    default: 1
-  },
-  pageSize: {
-    type: Number,
-    default: 10
-  }
+interface Column {
+  label: string
+  prop?: string
+  width?: string | number
+  slot?: string
+  align?: string
+  [key: string]: any
+}
+
+interface Props {
+  data?: any[]
+  columns?: Column[]
+  loading?: boolean
+  total?: number
+  currentPage?: number
+  pageSize?: number
+}
+
+withDefaults(defineProps<Props>(), {
+  data: () => [],
+  columns: () => [],
+  loading: false,
+  total: 0,
+  currentPage: 1,
+  pageSize: 10
 })
 
-defineEmits(['page-change', 'update:currentPage'])
+const emit = defineEmits<{
+  (e: 'page-change', val: number): void
+  (e: 'update:currentPage', val: number): void
+}>()
+
+function handlePageChange(val: number) {
+  emit('update:currentPage', val)
+  emit('page-change', val)
+}
 </script>
+
 
 <style lang="scss" scoped>
 @use "@/assets/styles/variables" as vars;

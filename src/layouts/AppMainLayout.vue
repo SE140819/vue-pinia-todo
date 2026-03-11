@@ -1,3 +1,21 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/authStore'
+import AppSidebar from './AppSidebar.vue'
+
+const router = useRouter()
+const route = useRoute()
+const authStore = useAuthStore()
+
+const routeName = computed(() => (route.name as string) || 'Dashboard')
+
+function handleLogout() {
+  authStore.logout()
+  router.push('/login')
+}
+</script>
+
 <template>
   <el-container class="layout-container">
     <el-aside width="240px">
@@ -16,31 +34,17 @@
         </div>
       </el-header>
       <el-main>
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <transition name="fade-slide" mode="out-in">
+            <component :is="Component" />
+          </transition>
+        </router-view>
       </el-main>
     </el-container>
   </el-container>
 </template>
 
-<script setup>
-import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/authStore'
-import AppSidebar from './AppSidebar.vue'
-
-const router = useRouter()
-const route = useRoute()
-const authStore = useAuthStore()
-
-const routeName = computed(() => route.name || 'Dashboard')
-
-const handleLogout = () => {
-  authStore.logout()
-  router.push('/login')
-}
-</script>
-
-<style scoped>
+<style scoped lang="scss">
 .layout-container {
   height: 100vh;
 }
@@ -67,4 +71,21 @@ const handleLogout = () => {
   color: #1e3a63;
   margin: 0;
 }
+
+/* Transitions */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: all 0.3s ease;
+}
+
+.fade-slide-enter-from {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
 </style>
+

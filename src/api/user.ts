@@ -1,6 +1,8 @@
+import type { UserListResponse } from '@/types'
+
 // Mock User API
 export const userApi = {
-  getUsers: async (params) => {
+  getUsers: async (_params?: any): Promise<UserListResponse> => {
     // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 500))
     
@@ -66,3 +68,4 @@ export const userApi = {
     }
   }
 }
+

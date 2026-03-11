@@ -18,16 +18,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Search } from '@element-plus/icons-vue'
 
-defineProps({
-  placeholder: {
-    type: String,
-    default: 'Search'
-  }
+interface Props {
+  placeholder?: string
+}
+
+withDefaults(defineProps<Props>(), {
+  placeholder: 'Search'
 })
 </script>
+
 
 <style lang="scss" scoped>
 @use "@/assets/styles/variables" as vars;

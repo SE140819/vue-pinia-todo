@@ -116,11 +116,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { Search, ArrowDown, Edit, Delete } from '@element-plus/icons-vue'
 import AppInput from '@/components/Form/AppInput.vue'
 import AppFormItem from '@/components/Form/AppFormItem.vue'
+
+interface Hashtag {
+  id: number
+  name: string
+  tags: string[]
+  description: string
+}
 
 const hashtagForm = reactive({
   name: '',
@@ -132,7 +139,7 @@ const searchQuery = ref('')
 const searchSecondary = ref('')
 const currentPage = ref(1)
 
-const hashtags = ref([
+const hashtags = ref<Hashtag[]>([
   { 
     id: 12, 
     name: 'Test Hashtag', 
@@ -159,9 +166,11 @@ const hashtags = ref([
   }
 ])
 
-const handleAdd = () => {
+function handleAdd() {
+  console.log('Add hashtag:', hashtagForm)
 }
 </script>
+
 
 <style scoped>
 .hashtag-page {

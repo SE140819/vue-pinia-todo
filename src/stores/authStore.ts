@@ -1,8 +1,12 @@
 import { defineStore } from "pinia"
 import { authApi } from "@/api/auth"
 
+interface AuthState {
+  token: string | null
+}
+
 export const useAuthStore = defineStore("auth", {
-  state: () => ({
+  state: (): AuthState => ({
     token: authApi.getToken()
   }),
 
@@ -11,10 +15,10 @@ export const useAuthStore = defineStore("auth", {
   },
 
   actions: {
-    login(username, password) {
+    login(username: string, password: string): boolean {
       const response = authApi.login(username, password)
       
-      if (response.success) {
+      if (response.success && response.token) {
         this.token = response.token
         authApi.saveToken(this.token)
         return true
@@ -23,7 +27,7 @@ export const useAuthStore = defineStore("auth", {
       return false
     },
 
-    logout() {
+    logout(): void {
       this.token = null
       authApi.removeToken()
     }

@@ -1,4 +1,7 @@
+<script setup lang="ts"></script>
+
 <template>
+
   <div class="item">
     <i>
       <slot name="icon"></slot>

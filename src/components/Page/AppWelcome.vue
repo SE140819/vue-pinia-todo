@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import AppWelcomeItem from './AppWelcomeItem.vue'
 import DocumentationIcon from '@/components/Icon/IconDocumentation.vue'
 import ToolingIcon from '@/components/Icon/IconTooling.vue'
@@ -6,8 +6,11 @@ import EcosystemIcon from '@/components/Icon/IconEcosystem.vue'
 import CommunityIcon from '@/components/Icon/IconCommunity.vue'
 import SupportIcon from '@/components/Icon/IconSupport.vue'
 
-const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
+function handleOpenReadme() {
+  fetch('/__open-in-editor?file=README.md')
+}
 </script>
+
 
 <template>
   <AppWelcomeItem>
@@ -44,7 +47,8 @@ const openReadmeInEditor = () => fetch('/__open-in-editor?file=README.md')
     <br />
 
     More instructions are available in
-    <a href="javascript:void(0)" @click="openReadmeInEditor"><code>README.md</code></a
+    <a href="javascript:void(0)" @click="handleOpenReadme"><code>README.md</code></a
+
     >.
   </AppWelcomeItem>
 

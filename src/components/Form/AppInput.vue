@@ -9,9 +9,10 @@
   </el-input>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // We inherit all el-input props and slots via v-bind="$attrs" and the slot loop
 </script>
+
 
 <style scoped>
 :deep(.el-input__wrapper) {

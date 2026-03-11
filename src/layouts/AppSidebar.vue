@@ -84,7 +84,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { 
@@ -92,13 +92,12 @@ import {
   Connection, UserFilled, Lock, Setting, Plus,
   MoreFilled
 } from '@element-plus/icons-vue'
-
-// Custom Hashtag icon as Icon component might not exist
 import { Hash } from 'lucide-vue-next'
 
 const route = useRoute()
 const activePath = computed(() => route.path)
 </script>
+
 
 <style scoped>
 .sidebar {

@@ -1,14 +1,21 @@
 import { defineStore } from 'pinia'
 import { userApi } from '@/api/user'
+import type { User } from '@/types'
+
+interface UserState {
+  users: User[]
+  loading: boolean
+  total: number
+}
 
 export const useUserStore = defineStore('user', {
-  state: () => ({
+  state: (): UserState => ({
     users: [],
     loading: false,
     total: 0
   }),
   actions: {
-    async fetchUsers(params) {
+    async fetchUsers(params?: any): Promise<void> {
       this.loading = true
       try {
         const data = await userApi.getUsers(params)
@@ -20,3 +27,4 @@ export const useUserStore = defineStore('user', {
     }
   }
 })
+

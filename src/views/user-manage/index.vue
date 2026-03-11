@@ -3,16 +3,10 @@
     <!-- Header Section -->
     <div class="page-header">
       <div class="search-section">
-        <AppInput
+        <AppBasicSearch
           v-model="searchQuery"
-          placeholder="Search"
-          class="search-input"
-          style="max-width:320px"
-        >
-          <template #prefix>
-            <el-icon><Search /></el-icon>
-          </template>
-        </AppInput>
+          style="width: 320px"
+        />
       </div>
       <el-button type="primary" class="add-user-btn">
         <el-icon class="el-icon--left"><Plus /></el-icon>
@@ -72,18 +66,27 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { Search, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/userStore'
-import AppInput from '@/components/Form/AppInput.vue'
 import AppTable from '@/components/Table/AppTable.vue'
+import AppBasicSearch from '@/components/Search/AppBasicSearch.vue'
+
+interface Column {
+  label: string
+  slot?: string
+  prop?: string
+  minWidth?: string | number
+  width?: string | number
+  align?: string
+}
 
 const userStore = useUserStore()
 const searchQuery = ref('')
 const currentPage = ref(1)
 
-const columns = [
+const columns: Column[] = [
   { label: 'User Name', slot: 'username', minWidth: '200' },
   { label: 'Full Name', prop: 'fullName', minWidth: '150' },
   { label: 'Email', prop: 'email', minWidth: '200' },
@@ -93,7 +96,7 @@ const columns = [
   { label: 'Action', slot: 'action', width: '120', align: 'center' }
 ]
 
-const handlePageChange = (page) => {
+function handlePageChange(page: number) {
   currentPage.value = page
   userStore.fetchUsers({ page })
 }
@@ -102,6 +105,7 @@ onMounted(() => {
   userStore.fetchUsers()
 })
 </script>
+
 
 <style lang="scss" scoped>
 @use "@/assets/styles/variables" as vars;

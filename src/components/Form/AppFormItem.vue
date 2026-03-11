@@ -4,11 +4,12 @@
   </el-form-item>
 </template>
 
-<script setup>
-defineProps({
-  label: String
-})
+<script setup lang="ts">
+defineProps<{
+  label?: string
+}>()
 </script>
+
 
 <style scoped>
 .premium-form-item {
