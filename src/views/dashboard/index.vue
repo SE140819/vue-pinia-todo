@@ -12,7 +12,7 @@
 <script setup>
 import { useRouter } from "vue-router"
 import { useAuthStore } from "@/stores/authStore"
-import TodoList from "@/components/TodoList.vue"
+import TodoList from "@/components/Page/TodoList.vue"
 
 const router = useRouter()
 const store = useAuthStore()

@@ -1,37 +1,47 @@
 import { defineStore } from "pinia"
 
-//
-export const useTodoStore = defineStore("todos", {
+export const useTodoStore = defineStore("todo", {
+
     state: () => ({
         todos: []
     }),
-    getters: {
-        totalTodos: (state) => state.todos.length,
-
-        completedTodos: (state) => state.todos.filter(todo => todo.done).length,
-    },
 
     actions: {
+
+        loadTodos() {
+
+            const data = localStorage.getItem("todos")
+
+            if (data) {
+                this.todos = JSON.parse(data)
+            }
+
+        },
+
         addTodo(text) {
+
             this.todos.push({
                 id: Date.now(),
                 text,
                 done: false
             })
+
+            localStorage.setItem("todos", JSON.stringify(this.todos))
+
         },
 
         toggleTodo(id) {
+
             const todo = this.todos.find(t => t.id === id)
+
             if (todo) {
                 todo.done = !todo.done
             }
-        },
 
-        deleteTodo(id) {
-            this.todos = this.todos.filter(t => t.id !== id)
+            localStorage.setItem("todos", JSON.stringify(this.todos))
+
         }
+
     }
 
-});
-
-
+})
