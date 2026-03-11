@@ -22,63 +22,50 @@
 
     <!-- Table Section -->
     <el-card class="table-card" shadow="never">
-      <el-table :data="userStore.users" v-loading="userStore.loading" style="width: 100%" class="custom-table">
-        <el-table-column label="User Name" min-width="200">
-          <template #default="{ row }">
-            <div class="user-cell">
-              <el-avatar :size="32" class="user-avatar">{{ row.username.substring(0,2).toUpperCase() }}</el-avatar>
-              <div class="user-info">
-                <span class="username">{{ row.username }}</span>
-                <span class="role">{{ row.role }} • {{ row.subRole }}</span>
-              </div>
+      <AppTable
+        :data="userStore.users"
+        :columns="columns"
+        :loading="userStore.loading"
+        :total="userStore.total"
+        v-model:current-page="currentPage"
+        @page-change="handlePageChange"
+      >
+        <!-- Custom slot for User Name -->
+        <template #username="{ row }">
+          <div class="user-cell">
+            <el-avatar :size="32" class="user-avatar">{{ row.username.substring(0,2).toUpperCase() }}</el-avatar>
+            <div class="user-info">
+              <span class="username">{{ row.username }}</span>
+              <span class="role">{{ row.role }} • {{ row.subRole }}</span>
             </div>
-          </template>
-        </el-table-column>
+          </div>
+        </template>
 
-        <el-table-column property="fullName" label="Full Name" min-width="150" />
-        <el-table-column property="email" label="Email" min-width="200" />
-
-        <el-table-column label="Social Accounts" min-width="180">
-          <template #default="{ row }">
-            <div class="social-stack">
-              <div v-for="(social, index) in row.socials.slice(0, 3)" :key="index" class="social-icon">
-                <el-avatar :size="24" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
-              </div>
-              <span v-if="row.socials.length > 3" class="more-socials">+ {{ row.socials.length - 3 }}</span>
+        <!-- Custom slot for Social Accounts -->
+        <template #socials="{ row }">
+          <div class="social-stack">
+            <div v-for="(social, index) in row.socials.slice(0, 3)" :key="index" class="social-icon">
+              <el-avatar :size="24" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" />
             </div>
-          </template>
-        </el-table-column>
+            <span v-if="row.socials.length > 3" class="more-socials">+ {{ row.socials.length - 3 }}</span>
+          </div>
+        </template>
 
-        <el-table-column label="Status" width="120">
-          <template #default="{ row }">
-            <el-tag :type="row.status === 'Active' ? 'success' : 'info'" effect="light" class="status-tag">
-              {{ row.status }}
-            </el-tag>
-          </template>
-        </el-table-column>
+        <!-- Custom slot for Status -->
+        <template #status="{ row }">
+          <el-tag :type="row.status === 'Active' ? 'success' : 'info'" effect="light" class="status-tag">
+            {{ row.status }}
+          </el-tag>
+        </template>
 
-        <el-table-column property="expiration" label="Expiration" width="150" />
-
-        <el-table-column label="Action" width="120" align="center">
-          <template #default>
-            <div class="action-buttons">
-              <el-button :icon="Edit" class="edit-btn" text />
-              <el-button :icon="Delete" class="delete-btn" text type="danger" />
-            </div>
-          </template>
-        </el-table-column>
-      </el-table>
-
-      <!-- Pagination Section -->
-      <div class="pagination-footer">
-        <el-pagination
-          v-model:current-page="currentPage"
-          :page-size="10"
-          :total="userStore.total"
-          layout="prev, pager, next, jumper"
-          background
-        />
-      </div>
+        <!-- Custom slot for Action -->
+        <template #action>
+          <div class="action-buttons">
+            <el-button :icon="Edit" class="edit-btn" text />
+            <el-button :icon="Delete" class="delete-btn" text type="danger" />
+          </div>
+        </template>
+      </AppTable>
     </el-card>
   </div>
 </template>
@@ -88,10 +75,26 @@ import { ref, onMounted } from 'vue'
 import { Search, Plus, Edit, Delete } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/userStore'
 import AppInput from '@/components/Form/AppInput.vue'
+import AppTable from '@/components/Table/AppTable.vue'
 
 const userStore = useUserStore()
 const searchQuery = ref('')
 const currentPage = ref(1)
+
+const columns = [
+  { label: 'User Name', slot: 'username', minWidth: '200' },
+  { label: 'Full Name', prop: 'fullName', minWidth: '150' },
+  { label: 'Email', prop: 'email', minWidth: '200' },
+  { label: 'Social Accounts', slot: 'socials', minWidth: '180' },
+  { label: 'Status', slot: 'status', width: '120' },
+  { label: 'Expiration', prop: 'expiration', width: '150' },
+  { label: 'Action', slot: 'action', width: '120', align: 'center' }
+]
+
+const handlePageChange = (page) => {
+  currentPage.value = page
+  userStore.fetchUsers({ page })
+}
 
 onMounted(() => {
   userStore.fetchUsers()
@@ -117,7 +120,7 @@ onMounted(() => {
 .add-user-btn {
   height: 40px;
   background-color: #3563a3;
-  border-radius: 20px; // Pill shape as in screenshot
+  border-radius: 20px;
   font-weight: 600;
   padding: 0 20px;
 }
@@ -125,6 +128,7 @@ onMounted(() => {
 .table-card {
   border-radius: 12px;
   border: none;
+  padding: 20px;
 }
 
 .user-cell {
@@ -199,26 +203,5 @@ onMounted(() => {
 .delete-btn {
   background-color: #fff5f5;
   color: #f56c6c;
-}
-
-.pagination-footer {
-  margin-top: 24px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* Custom Table Styles to match screenshot */
-:deep(.custom-table) {
-  --el-table-header-bg-color: transparent;
-  --el-table-row-hover-bg-color: #f9fbff;
-  
-  .el-table__header {
-    th {
-      font-weight: 700;
-      color: #333;
-      font-size: 13px;
-      border-bottom: 2px solid #f0f0f0;
-    }
-  }
 }
 </style>
