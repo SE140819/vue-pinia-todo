@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/authStore'
 import AppSidebar from './AppSidebar.vue'
@@ -10,6 +10,14 @@ const authStore = useAuthStore()
 
 const routeName = computed(() => (route.name as string) || 'Dashboard')
 
+const isCollapse = ref(localStorage.getItem('sidebar-collapse') === 'true')
+const asideWidth = computed(() => isCollapse.value ? '64px' : '260px')
+
+function handleToggleCollapse() {
+  isCollapse.value = !isCollapse.value
+  localStorage.setItem('sidebar-collapse', isCollapse.value.toString())
+}
+
 function handleLogout() {
   authStore.logout()
   router.push('/login')
@@ -18,10 +26,10 @@ function handleLogout() {
 
 <template>
   <el-container class="layout-container">
-    <el-aside width="240px">
-      <AppSidebar />
+    <el-aside :width="asideWidth" class="app-aside" style="overflow: visible; z-index: 10;">
+      <AppSidebar :is-collapse="isCollapse" @toggle-collapse="handleToggleCollapse" />
     </el-aside>
-    <el-container>
+    <el-container class="main-content-wrapper">
       <el-header class="layout-header">
         <div class="header-left">
           <div class="breadcrumb">
@@ -47,7 +55,13 @@ function handleLogout() {
 <style scoped lang="scss">
 .layout-container {
   height: 100vh;
+  overflow: hidden;
 }
+
+.app-aside {
+  transition: width 0.3s ease-in-out;
+}
+
 .layout-header {
   height: auto !important;
   padding: 20px 24px;
