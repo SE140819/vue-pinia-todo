@@ -1,29 +1,39 @@
-import { CONSTANTS } from '@/constants'
+import axiosClient from './axiosClient'
 import type { Todo } from '@/types'
 
-/**
- * Todo API/Service layer
- */
 export const todoApi = {
-  getTodos(): Todo[] {
-    const data = localStorage.getItem(CONSTANTS.STORAGE_KEYS.TODOS)
-    return data ? JSON.parse(data) : []
+  async getTodos(): Promise<Todo[]> {
+    const response: any = await axiosClient.get('/todos')
+    return response.map((item: any) => ({
+      id: item._id,
+      text: item.text,
+      done: item.done
+    }))
   },
 
-  saveTodos(todos: Todo[]): void {
-    localStorage.setItem(CONSTANTS.STORAGE_KEYS.TODOS, JSON.stringify(todos))
-  },
-
-  /**
-   * Mock API call to add a todo
-   * In a real app, this would be: return axiosClient.post('/todos', { text })
-   */
   async createTodo(text: string): Promise<Todo> {
-    return {
-      id: Date.now(),
+    const item: any = await axiosClient.post('/todos', {
       text,
       done: false
+    })
+    return {
+      id: item._id,
+      text: item.text,
+      done: item.done
     }
+  },
+
+  async updateTodo(todo: Todo): Promise<Todo> {
+    const { id, ...data } = todo
+    const item: any = await axiosClient.put(`/todos/${id}`, data)
+    return {
+      id: todo.id,
+      ...data
+    }
+  },
+
+  async deleteTodo(id: string | number): Promise<void> {
+    await axiosClient.delete(`/todos/${id}`)
   }
 }
 

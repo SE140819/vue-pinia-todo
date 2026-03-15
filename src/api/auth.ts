@@ -19,7 +19,6 @@ export const authApi = {
   },
 
   login(username: string, password: string): LoginResponse {
-    // Mock login logic - in a real app, this would use axiosClient
     if (username === 'admin' && password === '123456') {
       return { success: true, token: 'fake-token-' + Date.now() }
     }

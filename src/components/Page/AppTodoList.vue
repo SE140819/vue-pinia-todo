@@ -1,31 +1,57 @@
 <template>
-  <div class="todo-container">
-    <h2>Todo App</h2>
+  <div class="todo-container" v-loading="store.loading">
+    <h2>Todo App (Real API)</h2>
 
     <div class="input-group">
       <el-input
         v-model="newTodo"
-        placeholder="Nhập todo"
+        placeholder="Nhập nội dung công việc và nhấn Enter..."
+        :disabled="store.loading"
         @keyup.enter="handleAdd"
       />
-      <el-button type="primary" @click="handleAdd">
-        Thêm
+      <el-button 
+        type="primary" 
+        :loading="store.loading" 
+        @click="handleAdd"
+      >
+        Thêm mới
       </el-button>
     </div>
 
     <el-table
       :data="store.todos"
       class="todo-table"
+      empty-text="Chưa có công việc nào"
     >
-      <el-table-column label="Todo">
+      <el-table-column label="Trạng thái" width="100">
+        <template #default="scope">
+          <el-checkbox 
+            :model-value="scope.row.done" 
+            @change="handleToggle(scope.row.id)"
+          />
+        </template>
+      </el-table-column>
+      <el-table-column label="Nội dung">
         <template #default="scope">
           <span
             class="todo-text"
             :class="{ 'is-done': scope.row.done }"
-            @click="handleToggle(scope.row.id)"
           >
             {{ scope.row.text }}
           </span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Thao tác" width="120">
+        <template #default="scope">
+          <el-button 
+            type="danger" 
+            size="small" 
+            icon="Delete"
+            plain
+            @click="handleRemove(scope.row.id)"
+          >
+            Xóa
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -35,45 +61,29 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from "vue"
 import { useTodoStore } from "@/stores/todosStore"
+import { Delete } from "@element-plus/icons-vue"
 
 const store = useTodoStore()
-
 const newTodo = ref("")
-const timer = ref<any>(null)
 
-function handleAdd() {
-  if (!newTodo.value) return
+async function handleAdd() {
+  const text = newTodo.value.trim()
+  if (!text) return
 
-  try {
-    store.addTodo(newTodo.value)
-    newTodo.value = ""
-  } catch (error) {
-    console.error('Failed to add todo:', error)
-  }
+  await store.addTodo(text)
+  newTodo.value = ""
 }
 
-function handleToggle(id: number) {
-  store.toggleTodo(id)
+async function handleToggle(id: string | number) {
+  await store.toggleTodo(id)
+}
+
+async function handleRemove(id: string | number) {
+  await store.removeTodo(id)
 }
 
 onMounted(() => {
-  console.log("Component mounted")
   store.loadTodos()
-
-  timer.value = setInterval(() => {
-    console.log("app running...")
-  }, 5000)
-})
-
-watch(() => store.todos, (newVal) => {
-  console.log("Todos changed", newVal)
-}, { deep: true })
-
-onUnmounted(() => {
-  if (timer.value) {
-    clearInterval(timer.value)
-  }
-  console.log("Component destroyed")
 })
 </script>
 
