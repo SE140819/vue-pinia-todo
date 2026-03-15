@@ -29,7 +29,7 @@ axiosClient.interceptors.response.use(
   },
   (error: any) => {
     if (error.response && error.response.status === 401) {
-      // Handle logout or refresh token
+  
       localStorage.removeItem(CONSTANTS.STORAGE_KEYS.TOKEN)
       window.location.href = '/login'
     }
