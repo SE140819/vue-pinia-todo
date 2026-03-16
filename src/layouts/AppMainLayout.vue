@@ -8,7 +8,7 @@ const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 
-const routeName = computed(() => (route.name as string) || 'Dashboard')
+const routeName = computed(() => (route.name as string) || 'Todo App')
 
 const isCollapse = ref(localStorage.getItem('sidebar-collapse') === 'true')
 const asideWidth = computed(() => isCollapse.value ? '64px' : '260px')

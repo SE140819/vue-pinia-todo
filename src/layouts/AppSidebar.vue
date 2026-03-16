@@ -38,7 +38,7 @@
       >
         <el-menu-item index="/">
           <el-icon><Monitor /></el-icon>
-          <template #title>Dashboard</template>
+          <template #title>Todo App</template>
         </el-menu-item>
 
         <div v-if="!isCollapse" class="menu-label">MONITOR</div>
