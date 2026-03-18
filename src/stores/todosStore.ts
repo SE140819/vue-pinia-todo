@@ -35,7 +35,7 @@ export const useTodoStore = defineStore("todo", {
       this.loading = true
       try {
         await todoApi.createTodo(text)
-        await this.loadTodos() // Re-fetch to sync with server
+        await this.loadTodos() 
       } catch (error) {
         console.error('Failed to add todo:', error)
       } finally {
@@ -47,7 +47,7 @@ export const useTodoStore = defineStore("todo", {
       this.loading = true
       try {
         await todoApi.updateTodo(updatedTodo)
-        await this.loadTodos() // Re-fetch to sync with server
+        await this.loadTodos() 
       } catch (error) {
         console.error('Failed to update todo:', error)
       } finally {
@@ -59,7 +59,7 @@ export const useTodoStore = defineStore("todo", {
       this.loading = true
       try {
         await todoApi.deleteTodo(id)
-        await this.loadTodos() // Re-fetch to sync with server
+        await this.loadTodos()
       } catch (error) {
         console.error('Failed to remove todo:', error)
       } finally {

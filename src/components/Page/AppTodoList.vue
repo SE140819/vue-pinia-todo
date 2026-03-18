@@ -1,7 +1,6 @@
 <template>
   <div class="todo-container" v-loading="store.loading">
     <h2>Todo App 11</h2>
-
     <div class="input-group">
       <el-input
         v-model="newTodo"
@@ -17,7 +16,6 @@
         Thêm mới
       </el-button>
     </div>
-
     <el-table
       :data="store.todos"
       class="todo-table"

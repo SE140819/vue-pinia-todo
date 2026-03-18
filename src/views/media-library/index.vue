@@ -77,7 +77,7 @@
       <el-icon class="drop-icon"><Upload /></el-icon>
       <p class="drop-text">Drop files here or <span class="drop-link">browse</span></p>
       <p class="drop-hint">Supports: JPG, PNG, GIF, MP4, PDF, DOC (Max 50MB)</p>
-      
+
     </el-upload>
 
     <!-- Stats Row -->
@@ -371,7 +371,7 @@ function getTagType(type: string): 'primary' | 'warning' | 'success' | 'info' {
   return 'success'
 }
 
-function toggleSelect(id: number) {
+function toggtleSelect(id: number) {
   const index = selectedIds.value.indexOf(id)
   if (index === -1) selectedIds.value.push(id)
   else selectedIds.value.splice(index, 1)
